@@ -5,7 +5,11 @@ import * as genres from "../services/fakeMovieService";
 class Movies extends Component {
   state = {
     movies: genres.getMovies(),
+  };
 
+  deleteHandler = (movie_ind) => {
+    this.state.movies.splice(movie_ind, 1);
+    this.setState({ movies: this.state.movies });
   };
 
   makeTable() {
@@ -25,18 +29,7 @@ class Movies extends Component {
             <tbody>
               {this.state.movies.map((movie, i) => (
                 <tr key={i}>
-                  <td>{movie.title}</td>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.deleteHandler(i)}
-                    >
-                      delete
-                    </button>
-                  </td>
+                  <Movie movie={movie} onDelete={() => this.deleteHandler(i)} />
                 </tr>
               ))}
             </tbody>
@@ -49,7 +42,6 @@ class Movies extends Component {
   render() {
     return <main className="container">{this.makeTable()}</main>;
   }
-
 }
 
 export default Movies;
